@@ -32,7 +32,10 @@ const checkSchemeId = (req, res, next) => {
   }
 */
 const validateScheme = (req, res, next) => {
-
+  const { schema_name } = req.body
+  schema_name && schema_name !== null
+  ? next()
+  : res.status(400).json({ message: 'invalid scheme_name' })
 }
 
 /*
@@ -45,6 +48,14 @@ const validateScheme = (req, res, next) => {
   }
 */
 const validateStep = (req, res, next) => {
+  const { instructions, step_number } = req.body
+
+  const instrThere = instructions && instructions !== null
+  const numValid = typeof(step_number) === 'number' && step_number >= 1
+
+  instrThere && numValid
+    ? next()
+    : res.status(400).json({ message: 'invalid step' })
 
 }
 
