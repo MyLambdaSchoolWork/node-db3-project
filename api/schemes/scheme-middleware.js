@@ -20,7 +20,8 @@ const checkSchemeId = (req, res, next) => {
         res.status(404).json({ message: `scheme with scheme_id ${scheme_id} not found` })
       }
     })
-    .catch( err => errCatch(err, req, res, next))
+    .catch(next)
+    // .catch( err => errCatch(err, req, res, next))
 }
 
 /*
@@ -59,14 +60,6 @@ const validateStep = (req, res, next) => {
     ? next()
     : res.status(400).json({ message: 'invalid step' })
 
-}
-
-const errCatch = (err, req, res, next) => { // eslint-disable-line
-  res.status(err.status || 500).json({
-    sageAdvice: 'Finding the real error is 90% of the bug fix',
-    message: err.message,
-    stack: err.stack,
-  })
 }
 
 module.exports = {
