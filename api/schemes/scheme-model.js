@@ -97,7 +97,9 @@ async function findById(scheme_id) { // EXERCISE B
     .orderBy('st.step_number', 'ASC')
     .where('sc.scheme_id', scheme_id)
 
-  return {
+  return schemeTable.length === 0 
+    ? false
+    : {
     scheme_id: schemeTable[0].scheme_id,
     scheme_name: schemeTable[0].scheme_name,
     steps: schemeTable[0].step_id === null

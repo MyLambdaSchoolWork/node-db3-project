@@ -1,3 +1,5 @@
+const schemes = require('./scheme-model.js')
+
 /*
   If `scheme_id` does not exist in the database:
 
@@ -7,7 +9,18 @@
   }
 */
 const checkSchemeId = (req, res, next) => {
+  const { scheme_id } = req.params
 
+  schemes.findById(scheme_id)
+    .then(scheme => {
+      if(scheme){
+        req.scheme = scheme
+        next()
+      } else {
+        res.status(404).json({ message: `scheme with scheme_id ${scheme_id} not found` })
+      }
+    })
+    .catch( err => errCatch(err, req, res, next))
 }
 
 /*
@@ -33,6 +46,14 @@ const validateScheme = (req, res, next) => {
 */
 const validateStep = (req, res, next) => {
 
+}
+
+const errCatch = (err, req, res, next) => { // eslint-disable-line
+  res.status(err.status || 500).json({
+    sageAdvice: 'Finding the real error is 90% of the bug fix',
+    message: err.message,
+    stack: err.stack,
+  })
 }
 
 module.exports = {
