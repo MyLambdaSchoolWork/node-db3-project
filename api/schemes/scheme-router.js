@@ -52,14 +52,8 @@ router.get('/', (req, res, next) => {
     ]
   }
 */
-router.get('/:scheme_id', checkSchemeId, (req, res, next) => {
-  const { scheme_id } = req.params
-
-  Schemes.findById(scheme_id)
-    .then(scheme => {
-      res.json(scheme)
-    })
-    .catch(next)
+router.get('/:scheme_id', checkSchemeId, (req, res) => {
+  res.json(req.scheme)
 })
 
 /*
@@ -129,11 +123,10 @@ router.post('/', validateScheme, (req, res, next) => {
     }
   ]
 */
-router.post('/:scheme_id/steps', checkSchemeId, validateStep, (req, res, next) => {
-  const step = req.body
+router.post('/:scheme_id/steps', validateStep, checkSchemeId, (req, res, next) => {
   const { scheme_id } = req.params
 
-  Schemes.addStep(scheme_id, step)
+  Schemes.addStep(scheme_id, req.step)
     .then(allSteps => {
       res.status(201).json(allSteps)
     })
